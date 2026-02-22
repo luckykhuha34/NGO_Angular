@@ -1,0 +1,241 @@
+body,p,h1,h2,h3,button,div{
+  font-family: "Poppins", sans-serif !important;
+}
+.dashboard-container {
+  width: 100%;
+  padding: 2rem;
+  font-family: "Inter", sans-serif;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Title */
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* Tier Cards */
+.tier-cards {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tier-card {
+  flex: 1;
+  background: #f3e8ff;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tier-card.active {
+  background: #e4d3fd;
+}
+
+.tier-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--purpal);
+}
+
+.tier-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Two Column */
+.two-column {
+  display: flex;
+  gap: 2rem;
+}
+
+.two-column .list-section,
+.two-column .profile-card {
+  width: 50%;
+}
+
+/* Left Section */
+.list-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.list-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family: "Poppins", sans-serif !important;
+}
+
+.ambassadors-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem 1rem;
+}
+
+.ambassador-item {
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* Profile Card */
+.profile-card {
+  background: white;
+  padding: 1.8rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.profile-content {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.profile-img img {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+}
+
+.hours-box {
+  text-align: center;
+  padding: 0.6rem 1rem;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  min-width: 100px;
+}
+
+.hours-label {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.hours-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #7e22ce;
+}
+
+/* TEXT OVERFLOW FIX */
+.profile-info p {
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.pagination button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #6a1b9a;
+  color: white;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+}
+
+/* ========================= */
+/* 📱 MOBILE RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .tier-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .two-column {
+    flex-direction: column;
+  }
+
+  .two-column .list-section,
+  .two-column .profile-card {
+    width: 100%;
+  }
+
+  .ambassadors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+  }
+
+  .hours-box {
+    margin-top: 0.5rem;
+  }
+}
+
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 👇 Image + Hours in ONE LINE */
+.profile-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Image */
+.profile-img img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+}
+
+/* Hours box */
+.hours-box {
+  text-align: center;
+  padding: 0.6rem 1rem;
+  border: 1px solid #d5d5d5;
+  border-radius: 10px;
+  min-width: 110px;
+}
+
+/* 📱 Mobile safety */
+@media (max-width: 768px) {
+  .profile-top-row {
+    width: 100%;
+  }
+}
+
+
+

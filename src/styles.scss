@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+
+@include mat.core(); // required for all Material components
+
+// Choose one prebuilt theme:
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+// other options: deeppurple-amber.css, pink-bluegrey.css, purple-green.css
+
+
+/* You can add global styles to this file, and also import other style files */
+.tier-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.kindness-ambassador {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+}
+
+.change-catalyst {
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.service-champion {
+  background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+}
+
+.legacy-leader {
+  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  transition: stroke-dasharray 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+body {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: 200;
+  font-style: normal;
+  height: 100vh;
+  // overflow: hidden;
+}
+
+:root {
+  --primary-color: #5a0f8d;
+  --ligth-purpal: rgb(146, 99, 195);
+  --purpal: rgb(143, 30, 174);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Poppins, "Helvetica Neue", sans-serif;
+}
+
+// .ng-star-inserted {
+//   z-index: 1000 !important;
+// }
+
+.font-poppins {
+  font-family: "Poppins", sans-serif !important;
+}

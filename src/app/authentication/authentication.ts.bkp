@@ -1,0 +1,251 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ApiService } from '../Service/api.service';
+import { NgClass, NgIf } from '@angular/common';
+import { SharedService } from '../Service/shared.service';
+import { LoaderComponent } from '../loader/loader.component';
+import { TosterService } from '../Service/toster.service';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+
+
+@Component({
+  selector: 'app-authentication',
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf, LoaderComponent, NgClass],
+  templateUrl: './authentication.component.html',
+  styleUrl: './authentication.component.scss'
+})
+export class AuthenticationComponent {
+
+  loader: boolean = false;
+  loginForm: any = FormGroup;
+  signUpForm: any = FormGroup;
+  loginPage: boolean = true;
+  signUpPage: boolean = false;
+  authPage: boolean = true;
+  profileUploadPic: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
+  changePassword: boolean = false;
+  // uploadPic:boolean = false;
+  showPassword = false;
+  url = environment.apiUrl;
+
+  constructor(
+    private fb: FormBuilder,
+    private api: ApiService,
+    private sharedService: SharedService,
+    private toster: TosterService,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+
+    this.checkAuthStatus();
+
+    this.loginForm = this.fb.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
+
+    this.signUpForm = this.fb.group({
+      firstName: ['', Validators.required],//
+      lastName: ['', Validators.required],//
+      email: ['', [Validators.required, Validators.email]],//
+      // userName: ['', Validators.required],
+      password: ['', Validators.required],//
+      schoolOrOrganization: ['', Validators.required],//
+      dob: ['', Validators.required],//
+      phoneNumber: ['', Validators.required],//
+
+      state: ['', Validators.required],//
+      country: ['', Validators.required],//
+
+      // refCode: ['', Validators.required],
+      interests: [''],
+      // bio: [''],
+
+      profilePhoto: [null]
+    });
+
+    this.handleGoogleRedirectToken();
+
+  }
+
+
+  login() {
+    const email = this.loginForm.value.userName;
+    const password = this.loginForm.value.password;
+
+    if (this.loginForm.valid) {
+
+      this.loader = true;
+
+      this.api.post('auth/login', { email, password }).subscribe({
+        next: (res: any) => {
+          this.loader = false;
+          console.log(res);
+          this.toster.show("success", "Login successfully")
+          const isAdmin = res.user.role == 'admin' ? true : false;
+
+          const authToken = res.token;
+          localStorage.setItem("authToken", authToken);
+
+          this.loginPage = false;
+          this.authPage = false;
+          this.sharedService.login(authToken, isAdmin);
+
+          this.loginForm.reset();
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          this.loader = false;
+          console.error('Login failed', err);
+
+          this.toster.show('error', err.error?.message);
+        }
+      });
+    } else {
+      this.loader = false;
+      console.error('Form Invalid');
+
+      this.toster.show('error', 'Form Invalid');
+    }
+  }
+
+  signUp() {
+    console.log('SignUPForm >> ',this.signUpForm)
+    if (this.signUpForm.invalid) {
+      this.toster.show('error', 'Please fill all required fields.');
+      return;
+    }
+
+    this.loader = true;
+
+    const formData = new FormData();
+
+    formData.append("firstName", this.signUpForm.value.firstName);
+    formData.append("lastName", this.signUpForm.value.lastName);
+    formData.append("email", this.signUpForm.value.email);
+    formData.append("password", this.signUpForm.value.password);
+    formData.append("schoolOrganization", this.signUpForm.value.schoolOrOrganization);
+    formData.append("dateOfBirth", this.signUpForm.value.dob);
+    formData.append("phoneNumber", this.signUpForm.value.phoneNumber);
+
+    formData.append("state", this.signUpForm.value.state);
+    formData.append("country", this.signUpForm.value.country);
+
+    if (Array.isArray(this.signUpForm.value.interests)) {
+      this.signUpForm.value.interests.forEach((item: string, index: number) => {
+        formData.append(`causesOfInterest[${index}]`, item);
+      });
+    } else {
+      formData.append("causesOfInterest", this.signUpForm.value.interests);
+    }
+
+    formData.append("referredBy", "");
+
+    if (this.profileUploadPic) {
+      formData.append("profilePicture", this.profileUploadPic);
+    }
+
+    this.api.post('auth/register', formData).subscribe({
+      next: (res) => {
+        this.loader = false;
+        this.toster.show('success', 'Account created successfully!');
+        this.router.navigate(['/login']);
+        this.loginPage = true;
+        this.signUpPage = false;
+      },
+      error: (err) => {
+        this.loader = false;
+        this.toster.show('error', err.error?.message || 'Signup failed');
+        console.error(err);
+      }
+    });
+  }
+
+
+
+  logout() {
+    localStorage.removeItem("authToken");
+  }
+
+  checkAuthStatus() {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      try {
+        let obj = {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+        this.api.get('volunteers/dashboard', obj).subscribe(res => {
+          console.log(res);
+          this.loginPage = false;
+          this.authPage = false;
+          // this.sharedService.updateDashboardPage(true);
+        })
+      } catch (err) {
+        this.toster.show('error', err.error?.message);
+        console.log(err.message);
+      }
+    }
+  }
+
+   // ===================== GOOGLE LOGIN =====================
+  signInWithGoogle() {
+    window.location.href = `${this.url}auth/google`;
+  }
+
+  handleGoogleRedirectToken() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token'); 
+
+    if (token) {
+      this.loader = true;
+
+      // Save token
+      localStorage.setItem('authToken', token);
+
+      // Decode JWT to get role
+      let isAdmin = false;
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        isAdmin = payload.role === 'admin';
+      } catch (e) {
+        console.warn('Failed to decode JWT', e);
+      }
+
+      this.sharedService.login(token, isAdmin);
+
+      this.loginPage = false;
+      this.authPage = false;
+      this.loader = false;
+
+      // Remove token from URL
+      this.router.navigate([], { replaceUrl: true, queryParams: {} });
+
+      // Redirect to home
+      this.router.navigate(['/home']);
+    }
+  }
+
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.profileUploadPic = file;
+      const reader = new FileReader();
+      reader.onload = () => (this.previewUrl = reader.result);
+      reader.readAsDataURL(file);
+    }
+  }
+  // onFileSelected(event: any) { this.previewUrl = event.target.files[0]; console.log(this.previewUrl) }
+
+  forgetPassword() {
+    this.router.navigate(['/forgetPassword']);
+  }
+
+}

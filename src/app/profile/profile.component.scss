@@ -1,0 +1,221 @@
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* Wrapper */
+.profile-wrapper {
+  background: #f3f4f6;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card */
+.profile-card-main {
+  width: 100%;
+  max-width: 1200px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+/* Form Layout */
+.profile-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  text-align: center;
+}
+
+.profile-image-wrapper {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 12px;
+}
+
+.profile-image-wrapper img,
+.no-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-btn {
+  display: block;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f9fafb;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 100%;
+}
+
+/* Headings */
+.section-heading {
+  font-family: "Poppins", sans-serif !important;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.section-heading.center {
+  font-family: "Poppins", sans-serif !important;
+  text-align: center;
+}
+
+.section-heading.mt {
+  font-family: "Poppins", sans-serif !important;
+  margin-top: 20px;
+}
+
+/* Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #000;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* Submit */
+.submit-row {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.submit-row button {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 10px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.submit-row button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* ===================== */
+/* 📱 MOBILE RESPONSIVE */
+/* ===================== */
+
+@media (max-width: 768px) {
+  .profile-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .full {
+    grid-column: span 1;
+  }
+
+  .profile-image-wrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .submit-row button {
+    width: 100%;
+  }
+}
+
+/* Angular Material Datepicker Fix */
+::ng-deep .mat-input-match {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+
+
+
+
+
+
+// date picker 
+::ng-deep .mat-input-match {
+  width: 100%;
+}
+
+::ng-deep .mat-input-match .mat-mdc-text-field-wrapper {
+  height: 38px;
+  padding: 0;
+}
+
+::ng-deep .mat-input-match .mat-mdc-form-field-flex {
+  height: 44px;
+  align-items: center;
+}
+
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline {
+  z-index: 1;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+::ng-deep .mat-input-match .mat-mdc-form-field-infix {
+  padding: 0 12px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-input-match input.mat-mdc-input-element {
+  height: 44px;
+  line-height: normal;
+  font-size: 14px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-input-match .mat-mdc-icon-button {
+  width: 50px;
+  height: 50px;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .mat-input-match .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+::ng-deep .mat-input-match .mat-mdc-floating-label {
+  display: none !important;
+}

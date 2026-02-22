@@ -1,0 +1,127 @@
+<app-loader *ngIf="loaderVisible"></app-loader>
+
+<div class="dashboard-container">
+
+  <h2 class="section-title">All Volunteers</h2>
+
+  <!-- Two Column Layout -->
+  <div class="two-column">
+
+    <!-- LEFT - Volunteers Table -->
+    <div class="list-section">
+      <h3 class="list-title">Volunteers List</h3>
+
+      <!-- Search Bar -->
+      <div class="search-bar-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchText" 
+          (input)="onSearchChange()"
+          placeholder="Search by name or email..."
+          class="search-input"
+        />
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="paginatedVolunteers.length > 0; else noVolunteers">
+        <table class="volunteers-table">
+          <thead>
+            <tr>
+              <th class="col-name">Name</th>
+              <th class="col-email">Email</th>
+              <th class="col-action">View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let volunteer of paginatedVolunteers" class="volunteer-row">
+              <td class="col-name" [title]="volunteer.profile.firstName + ' ' + volunteer.profile.lastName">
+                {{ volunteer.profile.firstName }} {{ volunteer.profile.lastName }}
+              </td>
+              <td class="col-email" [title]="volunteer.email">
+                {{ volunteer.email }}
+              </td>
+              <td class="col-action">
+                <button 
+                  class="eye-button" 
+                  (click)="getVolunteerDetails(volunteer)"
+                  title="View Details"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="totalPages > 1">
+          <button 
+            class="pagination-btn"
+            (click)="prevPage()" 
+            [disabled]="currentPage === 1"
+          >
+            ‹ Prev
+          </button>
+          <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
+          <button 
+            class="pagination-btn"
+            (click)="nextPage()" 
+            [disabled]="currentPage === totalPages"
+          >
+            Next ›
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noVolunteers>
+        <div class="no-data-message">
+          <i class="fas fa-inbox"></i>
+          <p>No volunteers found</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- RIGHT - Volunteer Details Card -->
+    <div class="profile-card" *ngIf="volunteerCard && volunteerDetails">
+      <button class="close-button" (click)="closeDetails()">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <h3 class="profile-name">{{ volunteerDetails?.firstName }} {{ volunteerDetails?.lastName }}</h3>
+
+      <div class="profile-content">
+        <div class="profile-top-row">
+          <div class="profile-img">
+            <img [src]="imgUrl + (volunteerDetails?.profilePicture || '/assets/Image/default-profile.png')" alt="Profile" />
+          </div>
+
+          <div class="hours-box">
+            <p class="hours-label">Lifetime Hours</p>
+            <h2 class="hours-value">{{ volunteerDetails?.lifetimeHours || 0 }}</h2>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <p><strong>First Name:</strong> {{ volunteerDetails?.firstName }}</p>
+          <p><strong>Last Name:</strong> {{ volunteerDetails?.lastName }}</p>
+          <p><strong>Email:</strong> {{ volunteerDetails?.email }}</p>
+          <p><strong>School/Organization:</strong> {{ volunteerDetails?.schoolOrganization || 'N/A' }}</p>
+          <p><strong>Date of Birth:</strong> {{ volunteerDetails?.dateOfBirth | date:'MM/dd/yyyy' }}</p>
+          <p><strong>State:</strong> {{ volunteerDetails?.location?.state || 'N/A' }}</p>
+          <p><strong>Country:</strong> {{ volunteerDetails?.location?.country || 'N/A' }}</p>
+          <p><strong>Phone:</strong> {{ volunteerDetails?.phoneNumber || 'N/A' }}</p>
+          <p><strong>Causes of Interest:</strong> {{ volunteerDetails?.causesOfInterest || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder when no volunteer is selected -->
+    <div class="profile-card empty-state" *ngIf="!volunteerCard">
+      <div class="empty-state-content">
+        <i class="fas fa-user-alt"></i>
+        <p>Select a volunteer to view details</p>
+      </div>
+    </div>
+
+  </div>
+</div>

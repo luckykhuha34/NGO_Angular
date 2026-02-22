@@ -1,0 +1,252 @@
+body{
+  font-family: "Poppins", sans-serif !important;
+}
+button {
+    background-color: var(--primary-color);
+}
+
+.congrats-card {
+    background-color: #f8f3ff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+// .congrats-card:hover {
+//   transform: translateY(-3px);
+// }
+
+mat-form-field {
+    margin-right: 16px;
+}
+
+.congrats-image {
+    width: 200px;
+    // margin-bottom: 1rem;
+}
+
+.congrats-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #222;
+    margin-bottom: 1.5rem;
+}
+
+.highlight {
+    color: #000;
+    font-weight: 700;
+}
+
+.download-btn {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.download-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .congrats-card {
+        padding: 1.5rem;
+    }
+
+    .congrats-image {
+        width: 150px;
+    }
+
+    .congrats-text {
+        font-size: 1rem;
+    }
+
+    * {
+        max-width: 100% !important;
+    }
+}
+
+
+
+/* Pdf css */
+.report-container {
+    width: 100%;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+.headerBanner {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.card {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.card table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.card th {
+    background: #f5f5f5;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    color: #000;
+    font-weight: bold;
+}
+
+.card td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.footerCard {
+    margin-top: 20px;
+    padding: 12px;
+    background: #f2faf2;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.report-container {
+    // display: none;
+
+    table th,
+    table td {
+        text-align: center !important;
+    }
+}
+
+
+.congrats-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 10px;
+
+    .action-cancel-btn {
+        background-color: #fff !important;
+        color: #000;
+    }
+
+    .action-submit-btn {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+}
+
+.close-btn:hover {
+    color: #e53935;
+}
+
+
+.badge {
+    background: linear-gradient(90deg, var(--ligth-purpal), var(--purpal), var(--primary-color)) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.badge:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+
+
+
+
+
+.headerBanner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.headerBanner .left {
+    flex: 1;
+    font-size: large;
+    font-weight: bold;
+}
+
+.headerBanner .right {
+    width: 80px;
+    /* adjust width same as your red box */
+    height: 1px;
+    /* adjust height same as red box */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* keeps aspect ratio */
+    cursor: pointer;
+    /* shows clickable */
+}
+
+.action-btn {
+    button {
+        cursor: pointer;
+    }
+}
+
+mat-option{
+    min-height: 25px !important;
+}

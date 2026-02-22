@@ -1,0 +1,79 @@
+<div class="dashboard-container">
+
+  <h2 class="section-title">Recognition Tier Breakdown</h2>
+
+  <!-- Tier Cards -->
+  <div class="tier-cards">
+    <div class="tier-card active" *ngFor="let tier of tiers" (click)="loadvolunteerData(tier.tier)">
+      <p class="tier-name">{{ tier.tier }}</p>
+      <h3 class="tier-number">{{ tier.count }}</h3>
+    </div>
+  </div>
+
+  <!-- Two Column Layout -->
+  <div class="two-column">
+
+    <!-- LEFT -->
+    <div class="list-section">
+      <h3 class="list-title">{{ activeTier }}</h3>
+
+      <div *ngIf="selectTier">
+        <div class="ambassadors-grid">
+          <div *ngFor="let volunteer of paginatedVolunteers" class="ambassador-item"
+            (click)="getVolunteerDetails(volunteer.userId)">
+            {{ volunteer.firstName || 'User' }}
+            {{ volunteer.lastName || 'Name' }}
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" *ngIf="paginatedVolunteers.length > 10">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">
+            ‹ Prev
+          </button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+            Next ›
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!selectTier" class="ambassadors-grid">
+        Please select Tier
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="profile-card" *ngIf="volunteerCard">
+      <h3 class="profile-name">{{ volunteerDetails?.fullName }}</h3>
+
+
+      <div class="profile-content">
+        <div class="profile-top-row">
+          <div class="profile-img">
+            <img [src]="imgUrl + volunteerDetails.profilePicture" alt="Profile" />
+          </div>
+
+          <div class="hours-box">
+            <p class="hours-label">Lifetime Hours</p>
+            <h2 class="hours-value">{{ volunteerDetails?.lifetimeHours }}</h2>
+          </div>
+        </div>
+
+        <div class="profile-info">
+          <p><strong>First Name:</strong> {{ volunteerDetails?.firstName }}</p>
+          <p><strong>Last Name:</strong> {{ volunteerDetails?.lastName }}</p>
+          <p><strong>School/Organization Affiliation:</strong> {{ volunteerDetails?.schoolOrganization }}</p>
+          <p><strong>Date of Birth:</strong> {{ volunteerDetails?.dateOfBirth | date:'MM/dd/yyyy' }}</p>
+          <p><strong>State/Region:</strong> {{ volunteerDetails?.location?.state }}</p>
+          <p><strong>Country:</strong> {{ volunteerDetails?.location?.country }}</p>
+          <p><strong>Phone Number:</strong> {{ volunteerDetails?.phoneNumber }}</p>
+          <p><strong>Email:</strong> {{ volunteerDetails?.email }}</p>
+          <p><strong>Causes/Areas of Interest:</strong> {{ volunteerDetails?.causesOfInterest }}</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

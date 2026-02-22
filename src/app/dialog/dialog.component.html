@@ -1,0 +1,307 @@
+<app-loader *ngIf="loaderVisible"></app-loader>
+<button class="close-btn" (click)="dialogRef.close()">
+  ✕
+</button>
+<div class="congrats-card" *ngIf="type == 'badge'">
+
+  <div class="congrats-content">
+    <div class="flex justify-center">
+      <img src="assets/Image/Congratulations.png" alt="Congratulations" class="congrats-image" />
+
+    </div>
+
+    <p class="congrats-text" [innerHTML]="tierMessage?.message"></p>
+    <!-- <p class="congrats-text">
+      Hooray! NEST4US is proud to recognize you as a
+      <strong class="highlight">{{badge}}</strong>
+      for your 50+ hours of volunteer service.
+      Thank you for spreading kindness and making the world brighter with every act you do!
+    </p> -->
+
+    <div class="flex justify-center space-x-3 pt-4 action-btn">
+      <!-- <button class="download-btn" (click)="viewBadge(badge)">
+        View badge
+      </button> -->
+
+      <button class="download-btn" (click)="redirectToDrive(badge)">
+        Download Badge and Social Media Toolkit
+      </button>
+
+      <!-- <button class="download-btn" (click)="downloadMediaKit(badge)">
+        Download Social Media Toolkit
+      </button> -->
+    </div>
+
+  </div>
+</div>
+
+<div class="congrats-card" *ngIf="type == 'newTier'">
+
+  <div class="congrats-content ">
+    <div class="flex justify-center">
+      <img src="assets/Image/Congratulations.png" alt="Congratulations" class="congrats-image" />
+
+    </div>
+    <br>
+    <div class="">
+      <p style="font-size: large; font-weight: bold;">New Tier Unlocked
+      </p>
+      <span
+        class="inline-flex items-center px-4 py-3 rounded-full text-sm font-medium text-white badge">{{unlockedTier}}</span>
+    </div>
+    <br>
+
+    <p class="congrats-text" [innerHTML]="tierContent?.message ? tierContent.message : 'Message not found'">
+
+    </p>
+
+    <div class="flex justify-center space-x-3 pt-4">
+      <!-- <button class="download-btn" (click)="viewBadge(badge)">
+        View badge
+      </button> -->
+      <button class="download-btn" (click)="redirectToDrive(unlockedTier)">
+        Download Badge and Social Media Toolkit
+      </button>
+
+      <!-- <button class="download-btn">
+        Download Social Media Toolkit
+      </button> -->
+    </div>
+
+  </div>
+</div>
+
+
+<div class="congrats-card" *ngIf="data.type === 'exportDate'">
+
+  <mat-tab-group [(selectedIndex)]="selectedTab">
+
+    <!-- ================= TAB 1 : SINGLE DATE ================= -->
+    <mat-tab label="Single Date">
+      <div class="congrats-card">
+
+        <div *ngIf="isAdmin">
+
+          <!-- Volunteer -->
+          <mat-form-field>
+            <mat-label>Volunteer</mat-label>
+            <input matInput [(ngModel)]="volunteerName" (keyup)="searchVolunteer()" [matAutocomplete]="autoVolunteer">
+          </mat-form-field>
+
+          <mat-autocomplete #autoVolunteer="matAutocomplete" (optionSelected)="selectVolunteer($event.option.value)">
+            <mat-option *ngFor="let v of volunteerSuggestions" [value]="v.profile.firstName + ' ' + v.profile.lastName">
+
+              {{ v.profile.firstName }} {{ v.profile.lastName }}
+            </mat-option>
+
+          </mat-autocomplete>
+
+          <!-- Service Type -->
+          <mat-form-field>
+            <mat-label>Service Type</mat-label>
+            <mat-select [(ngModel)]="serviceType">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let s of serviceTypes" [value]="s">
+                {{ s }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Date -->
+        <mat-form-field>
+          <mat-label>Date</mat-label>
+          <input matInput [max]="today" [matDatepicker]="singlePicker" [(ngModel)]="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="singlePicker"></mat-datepicker-toggle>
+          <mat-datepicker #singlePicker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button class="action-cancel-btn" (click)="dialogRef.close()">Cancel</button>
+
+          <button mat-raised-button class="action-submit-btn" (click)="submit('single'); showPdf = true; data.type = false;">Submit</button>
+        </div>
+
+      </div>
+    </mat-tab>
+
+    <!-- ================= TAB 2 : DATE RANGE ================= -->
+    <mat-tab label="Date Range">
+      <div class="congrats-card">
+
+        <div *ngIf="isAdmin">
+          <!-- Volunteer -->
+          <mat-form-field>
+            <mat-label>Volunteer</mat-label>
+            <input matInput placeholder="Search volunteer" [(ngModel)]="volunteerName" (keyup)="searchVolunteer()"
+              [matAutocomplete]="autoVolunteerRange">
+          </mat-form-field>
+
+          <mat-autocomplete #autoVolunteerRange="matAutocomplete"
+            (optionSelected)="selectVolunteer($event.option.value)">
+            <mat-option *ngFor="let v of volunteerSuggestions" [value]="v.profile.firstName + ' ' + v.profile.lastName">
+
+              {{ v.profile.firstName }} {{ v.profile.lastName }}
+            </mat-option>
+
+          </mat-autocomplete>
+
+          <!-- Service Type -->
+          <mat-form-field>
+            <mat-label>Service Type</mat-label>
+            <mat-select [(ngModel)]="serviceType">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let s of serviceTypes" [value]="s">
+                {{ s }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+
+        <!-- Date Range -->
+        <mat-form-field>
+          <mat-label>From Date</mat-label>
+          <input matInput [max]="today" [matDatepicker]="fromPicker" [(ngModel)]="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>To Date</mat-label>
+          <input matInput [max]="today" [matDatepicker]="toPicker" [(ngModel)]="toDate">
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button class="action-cancel-btn" (click)="dialogRef.close()">Cancel</button>
+
+          <button mat-raised-button class="action-submit-btn" (click)="submit('range'); showPdf = true; data.type = false;">Submit</button>
+        </div>
+
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>
+
+
+
+
+<!-- report.component.html -->
+<div id="pdfContent" class="report-container" *ngIf="showPdf">
+  <!-- Header -->
+  <!-- <div class="headerBanner">
+    <div class="left">
+      <h2>Full Name: John Doe</h2>
+      <p>NEST4US • www.nest4us.org</p>
+    </div>
+    <div class="right">
+      <img src="https://ngo-node-js.onrender.com/uploads/logo/logo.png" crossOrigin="anonymous" />
+    </div>
+  </div> -->
+
+  <div class="headerBanner">
+    <div class="left">
+      <h2>Name: {{fullName}}</h2>
+      <p>NEST4US • <a href="https://www.nest4us.org" target="_blank">www.nest4us.org</a> </p>
+    </div>
+
+    <div class="right">
+      <a href="https://www.nest4us.org" target="_blank">
+        <img src="https://ngo-node-js.onrender.com/uploads/logo/logo.png" crossOrigin="anonymous" class="header-logo" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Event Table Card -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Service Activity</th>
+          <th>Date of Service</th>
+          <th>Hours</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of pdfExportData?.records">
+          <td>{{ r.serviceActivity }}</td>
+          <td>{{ r.serviceDate | date }}</td>
+          <td>{{ r.numberOfHours }}</td>
+          <td>{{ r.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer Total -->
+  <div class="footerCard">
+    <!-- TOTAL HOURS FOR SELECTED EVENTS: {{ pdfExportData?.totalHours }} HOURS -->
+    TOTAL HOURS: {{ pdfExportData?.totalHours }} HOURS
+    <br>
+    For any questions, please reach out to info&#64;nest4us.org - thanks!
+  </div>
+</div>
+<!-- <button (click)="exportData()">Download PDF</button> -->
+
+
+<!-- <div class="p-4" *ngIf="type == 'viewProof'">
+
+  <h2 class="text-lg font-semibold mb-3 text-gray-800">
+    Proof of Service
+  </h2>
+
+  <img *ngIf="proofImageUrl" [src]="proofImageUrl" class="max-h-96 w-full object-contain border rounded-lg shadow-sm"
+    alt="Proof Image" />
+
+  <div class="flex justify-end mt-4">
+    <button (click)="dialogRef.close()" class="px-4 py-2 text-white rounded-lg transition">
+      Close
+    </button>
+  </div>
+
+</div> -->
+<div class="p-4" *ngIf="type == 'viewProof'">
+
+  <h2 class="text-lg font-semibold mb-3 text-gray-800">
+    Proof of Service
+  </h2>
+
+  <div class="relative inline-block w-full">
+
+    <!-- Download Button (Top Right ON IMAGE) -->
+    <button *ngIf="proofImageUrl && isAdmin" (click)="downloadProofOfImg(proofImageUrl)"
+      class="absolute top-2 right-2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full shadow cursor-pointer z-10">
+      <i style="color: #ffff;" class="fa-solid fa-download"></i>
+    </button>
+
+    <!-- Image -->
+    <img *ngIf="proofImageUrl" [src]="proofImageUrl" class="max-h-96 w-full object-contain border rounded-lg shadow-sm"
+      alt="Proof Image" />
+
+  </div>
+
+  <div class="flex justify-end mt-4">
+    <button (click)="dialogRef.close()" class="px-4 py-2 text-white rounded-lg transition">
+      Close
+    </button>
+  </div>
+
+</div>
+
+
+
+<div class="p-4" *ngIf="type == 'rejectHours'">
+  <h2 class="text-lg font-semibold mb-3">Rejection Reason</h2>
+
+  <textarea [(ngModel)]="hourRejectReason" rows="3" placeholder="Enter reason (optional)"
+    class="w-full border rounded p-2"></textarea>
+
+  <div class="flex justify-end mt-4 space-x-2">
+    <button class="px-4 py-2 bg-gray-300 rounded" (click)="dialogRef.close()">Cancel</button>
+    <button class="px-4 py-2 bg-purple-600 text-white rounded" (click)="submitHourReason()">Submit</button>
+  </div>
+</div>

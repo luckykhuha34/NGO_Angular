@@ -1,0 +1,118 @@
+body{
+  font-family: "Poppins", sans-serif !important;
+}
+/* Full background */
+.admin-wrapper {
+    min-height: 81vh;
+    background: #111827; /* Dark navy */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* Card Box */
+.admin-card {
+    width: 100%;
+    max-width: 420px;
+    background: #1f2937; /* Dark grey */
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 25px rgba(0,0,0,0.4);
+    text-align: center;
+    color: #fff;
+}
+
+/* Title */
+.admin-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.8rem;
+    color: #f9fafb;
+    font-family: "Poppins", sans-serif !important;
+}
+
+/* Input Group */
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+/* Input */
+.admin-input {
+    width: 100%;
+    padding: 0.9rem;
+    background: #374151; 
+    color: #fff;
+    border: 1px solid #4b5563;
+    border-radius: 6px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.admin-input::placeholder {
+    color: #9ca3af;
+}
+
+.admin-input:focus {
+    border-color: #8b5cf6; /* violet accent */
+    box-shadow: 0 0 5px rgba(139,92,246,0.5);
+}
+
+/* Sign In Button */
+.admin-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: #8b5cf6;  /* violet */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-btn:hover {
+    background: #7c3aed;
+}
+
+/* Forgot password text */
+.forgot-text {
+    margin-top: 1rem;
+}
+
+.forgot-text a {
+    color: #c4b5fd;
+    font-size: 0.9rem;
+}
+
+.forgot-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .admin-card {
+        padding: 1.8rem;
+    }
+}
+
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .admin-input {
+  padding-right: 40px; /* space for eye button */
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+

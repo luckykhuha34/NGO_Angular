@@ -1,0 +1,106 @@
+<div class="profile-wrapper" *ngIf="editProfile">
+  <div class="profile-card-main">
+
+    <!-- FORM START -->
+    <form [formGroup]="updateProfile" class="profile-form">
+
+      <!-- LEFT PANEL -->
+      <div class="left-panel">
+        <h3 class="section-heading">Profile Picture *</h3>
+
+        <div class="profile-image-wrapper">
+          <img
+            *ngIf="previewUrl; else noImage"
+            [src]="uploadPic ? previewUrl : fileBaseUrl + previewUrl"
+            alt="Profile"
+          />
+
+          <ng-template #noImage>
+            <div class="no-image">No Image</div>
+          </ng-template>
+        </div>
+
+        <label class="upload-btn">
+          <input type="file" hidden (change)="onFileSelected($event)" accept="image/*" />
+          Upload Photo
+        </label>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="right-panel">
+
+        <h3 class="section-heading center">Profile Information</h3>
+
+        <div class="form-grid">
+          <div>
+            <label>First Name *</label>
+            <input type="text" formControlName="firstName" required />
+          </div>
+
+          <div>
+            <label>Last Name *</label>
+            <input type="text" formControlName="lastName" required />
+          </div>
+
+          <div class="full">
+            <label>School / Organization Affiliation *</label>
+            <input type="text" formControlName="organization" required />
+          </div>
+
+          <div>
+            <label>Date of Birth *</label>
+            <mat-form-field appearance="outline" class="w-full mat-input-match">
+              <input
+                matInput
+                [matDatepicker]="dob"
+                formControlName="dob"
+                placeholder="Date of Birth"
+                [max]="today"
+                required
+              />
+              <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+              <mat-datepicker #dob></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <label>State / Region *</label>
+            <input type="text" formControlName="state" />
+          </div>
+
+          <div class="full">
+            <label>Country *</label>
+            <input type="text" formControlName="country" required />
+          </div>
+        </div>
+
+        <h3 class="section-heading mt">Contact Information</h3>
+
+        <div class="form-grid">
+          <div>
+            <label>Phone Number *</label>
+            <input type="text" formControlName="phoneNumber" required />
+          </div>
+
+          <div>
+            <label>Email *</label>
+            <input type="email" formControlName="email" [disabled]="true" />
+          </div>
+        </div>
+
+        <h3 class="section-heading mt">Causes / Areas of Interest *</h3>
+        <input type="text" formControlName="interests" />
+
+        <div class="submit-row">
+          <button type="button" (click)="updateProfileFun()">
+            Update Profile
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+    <!-- FORM END -->
+
+  </div>
+</div>

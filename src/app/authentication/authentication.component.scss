@@ -1,0 +1,299 @@
+.panel-body {
+    margin-top: 50px;
+}
+body{
+  font-family: "Poppins", sans-serif !important;
+}
+
+.heading {
+  font-weight: bold !important;
+  font-size: x-large !important;
+  font-family: "Poppins", sans-serif !important;
+}
+.formInsideLogin {
+    // min-height: 81vh;
+    padding: 2rem 3rem 3rem 3rem;
+    /* smaller default padding */
+    max-width: 450px;
+    /* controls form width */
+    margin: 0 auto;
+
+    input {
+        width: 80% !important;
+        /* reduce input width */
+        margin: 0 auto;
+        /* center inputs */
+        display: block;
+        border-color: #000;
+    }
+}
+
+.formInsideSignUp {
+    input {
+        width: 80% !important;
+        /* reduce input width */
+        margin: 0 !important;
+        /* center inputs */
+        display: block;
+        border-color: #000;
+    }
+}
+
+.consern {
+    padding: 0.5rem;
+    justify-content: space-between;
+    margin: 0rem 2rem 0rem 2rem;
+
+    a {
+        border-bottom: 1px solid;
+        color: rgba(55, 65, 81, var(--tw-text-opacity));
+    }
+}
+
+/* Very small screens */
+@media (max-width: 640px) {
+    .formInside {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+
+    .consern {
+        padding: 0 !important;
+        justify-content: space-between;
+    }
+
+    .google-signIn {
+        padding: 0 !important;
+    }
+
+    .google-signIn-text {
+        margin: 0 !important;
+        /* reduce spacing */
+    }
+}
+
+.google-signIn-text {
+    margin: 0 !important;
+    /* reduce spacing */
+}
+
+/* Inputs – reduce width */
+
+input {
+    // width: 80% !important;
+    /* reduce input width */
+    margin: 0 auto;
+    /* center inputs */
+    display: block;
+    border-color: #000;
+}
+
+/* Button width reduced */
+.signInBtn {
+    background-color: var(--primary-color);
+    width: 80% !important;
+    margin: 0 auto;
+    display: block;
+    color: #fff;
+}
+
+/* Google button also reduced */
+.google-signIn button {
+    width: 80% !important;
+    margin: 0 auto;
+}
+
+button {
+    border-color: #000;
+    border-width: 2px;
+}
+
+.signUp-btn {
+    background: var(--primary-color);
+}
+
+input::placeholder {
+    color: #000;
+}
+
+.login-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+
+}
+
+.bold-font {
+    font-weight: bold !important;
+}
+
+.create-prfile {
+    font: 544 27px / 32px Poppins, sans-serif !important;
+    letter-spacing: .0125em;
+    margin: 0 0 28px !important;
+}
+
+
+.password-eye {
+    position: absolute;
+    right: 40px;
+    /* distance from right side */
+    top: 50%;
+    /* vertical center */
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    z-index: 10;
+    /* ensures icon stays on top */
+}
+
+.password-eye:hover {
+    color: #7b3ce0;
+}
+
+.craete-pass {
+    margin-top: -13px !important;
+}
+
+
+
+
+
+
+::ng-deep .mat-input-match {
+    width: 100%;
+}
+
+/* Outer wrapper */
+::ng-deep .mat-input-match .mat-mdc-text-field-wrapper {
+    height: 38px;
+    padding: 0;
+}
+
+/* Main flex container */
+::ng-deep .mat-input-match .mat-mdc-form-field-flex {
+    height: 44px;
+    align-items: center;
+}
+
+/* Input + placeholder container */
+::ng-deep .mat-input-match .mat-mdc-form-field-infix {
+    padding: 0 12px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+}
+
+/* Input text */
+::ng-deep .mat-input-match input.mat-mdc-input-element {
+    height: 44px;
+    line-height: normal;
+    /* 🔥 FIX */
+    font-size: 14px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Calendar icon button */
+::ng-deep .mat-input-match .mat-mdc-icon-button {
+    width: 50px;
+    height: 50px;
+    margin-top: 0;
+    /* 🔥 FIX */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Remove hint / error space */
+::ng-deep .mat-input-match .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+/* Hide floating label completely */
+::ng-deep .mat-input-match .mat-mdc-floating-label {
+    display: none !important;
+}
+
+
+
+.panel-body {
+    margin-top: 50px;
+    padding: 0 12px;
+}
+
+.formInsideLogin {
+    padding: 2rem;
+    max-width: 420px;
+    width: 100%;
+    margin: auto;
+
+    input {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .formInsideLogin {
+        padding: 1.25rem;
+        max-width: 100%;
+    }
+}
+
+input {
+    width: 100% !important;
+    margin: 0 auto;
+}
+
+.signInBtn,
+.google-signIn button {
+    width: 100% !important;
+}
+
+.consern {
+    padding: 0.5rem 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+@media (max-width: 640px) {
+    .consern {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    form.grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .relative.w-40.h-40 {
+        margin: auto;
+    }
+}
+
+.formInsideSignUp input {
+    width: 100% !important;
+}
+
+.signUp-btn,
+button[type="button"] {
+    width: 100%;
+}
+
+.password-eye {
+    right: 12px;
+    font-size: 18px;
+}
+
+::ng-deep .mat-input-match {
+    width: 100%;
+}

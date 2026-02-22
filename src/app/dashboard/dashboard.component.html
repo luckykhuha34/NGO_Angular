@@ -1,0 +1,544 @@
+<app-loader *ngIf="loaderVisible"></app-loader>
+
+<div class="panel-body">
+
+
+  <!-- Dashboard Content -->
+  <div *ngIf="dashboardData" #dashboardContainer>
+    <!-- Dashboard Header -->
+    <div class="rounded-lg shadow-md p-6 mb-6 dHeader">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="text-3xl heading font-bold text-gray-900">
+            Welcome back, {{ dashboardData.profile.firstName }}!
+          </h1>
+          <!-- <p class="text-gray-600 mt-1">Welcome to your volunteer dashboard</p> -->
+          <p class="text-gray-600 mt-1" *ngIf="!isAdmin">Manage your service, explore opportunities, and track your
+            impact—all in one
+            place.</p>
+          <p class="text-gray-600 mt-1" *ngIf="isAdmin">Manage volunteers, track metrics, and measure impact—all at the
+            same time.</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex space-x-10 submit-hours">
+          <button (click)="onSubmitHours()" *ngIf="!isAdmin"
+            class="bg-blue-600 subminhrsbtn text-white px-4 py-3 rounded-md hover:bg-blue-700 transition duration-200">
+            <i class="fas fa-plus mr-2"></i>Submit Hours
+          </button>
+          <button (click)="exportVolunteerData()"
+            class="bg-green-600 exportdatabtn text-white px-4 py-3 rounded-md hover:bg-green-700 transition duration-200">
+            <i class="fas fa-download mr-2"></i>Export Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <!-- <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <ng-container *ngFor="let card of statCards">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full" [ngClass]="card.bgColor">
+            <i [class]="card.icon + ' ' + card.textColor + ' text-xl'"></i>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">{{ card.label }}</p>
+            <p class="text-2xl font-semibold text-gray-900">
+              {{ card.value }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div> -->
+    <!-- Stats Section -->
+    <div class="tile-heading" *ngIf="isAdmin">
+      <h3>Portal Analytics</h3>
+    </div>
+    <div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-6">
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 flex-1">
+        <ng-container *ngFor="let card of (isAdmin ? statCardsAdmin : statCards)">
+          <div
+            class="bg-white shadow-sm rounded-lg p-2 flex flex-col justify-center items-start transition-transform hover:-translate-y-1 hover:shadow-md"
+            [ngClass]="{'cursor-pointer': card.label === 'Total Volunteers'}"
+            (click)="card.label === 'Total Volunteers' && goToAllVolunteers()">
+            <div class="flex tile-cards items-center mb-2">
+              <div class="p-1 mb-8 tile-icon rounded-full flex-shrink-0">
+                <i [class]="card.icon + ' text-2xl'"></i>
+              </div>
+              <div class="ml-4 min-w-0">
+                <!-- prevent overflow by wrapping text -->
+                <p class="text-sm font-medium  whitespace-normal break-words">
+                  {{ card.label }}
+                </p>
+                <p class="text-1xl md:text-2xl font-extrabold leading-tight whitespace-normal break-words">
+                  {{ card.value }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Right Buttons -->
+      <div class="flex card-button flex-col gap-2 w-full md:w-56" *ngIf="!isAdmin">
+        <button class="hover:bg-purple-800 text-white font-semibold py-2 rounded-sm transition-all">
+          <a href="https://nest4us.org/volunteer/" target="_blank" class="block w-full h-full">
+            Volunteer
+          </a>
+        </button>
+        <button class="hover:bg-purple-800 text-white font-semibold py-2 rounded-sm transition-all">
+          <a href="https://nest4us.org/events/" target="_blank" class="block w-full h-full">
+            Upcoming Events
+          </a>
+        </button>
+        <button class="hover:bg-purple-800 text-white font-semibold py-2 rounded-sm transition-all">
+          <a href="https://nest4us.org/recognition-programs/" target="_blank" class="block w-full h-full">
+            Recognition Programs
+          </a>
+        </button>
+      </div>
+    </div>
+
+
+
+    <!-- Progress to Next Tier -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6" *ngIf="!isAdmin">
+      <h3 class="font-semibold heading text-gray-900 mb-4" style="font-size: x-large;">
+        Progress to Next Tier
+      </h3>
+      <div *ngIf="progressInfo; else highestTier">
+        <div class="mb-2 flex justify-between text-sm text-gray-600">
+          <span>Progress to {{ progressInfo.nextTier.name }}</span>
+          <span>{{ dashboardData.totalHours }} / {{
+            progressInfo.nextTier.hours
+            }}
+            hours</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+          <div class="tier-badge h-4 rounded-full transition-all duration-500" [style.width.%]="progressInfo.progress">
+          </div>
+        </div>
+        <p class="text-sm text-gray-600">
+          {{ progressInfo.remaining }} hours remaining to reach
+          {{ progressInfo.nextTier.name }}
+        </p>
+      </div>
+      <ng-template #highestTier>
+        <div class="text-center p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg">
+          <i class="fas fa-crown text-3xl mb-2"></i>
+          <p class="text-lg font-semibold">
+            Congratulations! You've reached the highest tier!
+          </p>
+          <p class="text-sm opacity-90">
+            Legacy Leader - {{ dashboardData.totalHours }} hours
+          </p>
+        </div>
+      </ng-template>
+
+      <!-- Badges -->
+      <div id="badgeContainer" class="mt-4">
+        <h4 class="text-md font-medium text-gray-700 mb-2 font-poppins">Your Badges</h4>
+        <div class="flex flex-wrap gap-2">
+          <span *ngFor="let badge of dashboardData.badges">
+            <span class="inline-flex items-center px-4 py-3 rounded-full text-sm font-medium text-white badge" (click)="openDialog(badge)">
+              <!-- <i class="fas fa-award mr-1"></i> -->
+              <button>
+                {{ badge }}
+              </button>
+            </span>
+          </span>
+          <p *ngIf="!dashboardData.badges?.length" class="text-gray-500">
+            No badges earned yet. Keep volunteering!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hours History -->
+    <div class="bg-white rounded-lg shadow-md p-6" *ngIf="!isAdmin">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        <h3 class="text-lg heading font-semibold text-gray-900">Hours History</h3>
+        <div class="mt-2 md:mt-0 flex space-x-2">
+          <select [(ngModel)]="statusFilter" class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <button (click)="loadDashboardDataRefresh()"
+            class="bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-700 transition duration-200 text-sm">
+            <i class="fas fa-refresh" [ngClass]="{ 'spin': isLoading }"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Activity
+              </th>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Date of service
+              </th>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Hours
+              </th>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Status
+              </th>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Submitted
+              </th>
+              <th class="px-6 py-3 text-left text-md font-medium uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngIf="!filteredHistory.length">
+              <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                <i class="fas fa-inbox text-3xl mb-2 block"></i>
+                No volunteer hours submitted yet
+              </td>
+            </tr>
+            <tr *ngFor="let entry of filteredHistory">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ entry.activityName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ entry.serviceDate | date:'MM/dd/yyyy' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ entry.hours }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [ngClass]="statusClass(entry.status)">
+                  <i [ngClass]="statusIcon(entry.status)" class="mr-1"></i>
+                  {{ entry.status | titlecase }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <!-- {{ entry.submittedAt | date: 'shortDate' }} -->
+                {{ entry.submittedAt | date:'MM/dd/yyyy' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <button *ngIf="entry.status === 'pending'" class="text-blue-600 hover:text-blue-900"
+                  (click)="editHours(entry.id)">
+                  Edit
+                </button>
+                <button *ngIf="entry.rejectionReason" class="text-red-600 hover:text-red-900 ml-2"
+                  (click)="showRejectionReason(entry.rejectionReason)">
+                  View Reason
+                </button>
+                <span *ngIf="entry.status !== 'pending' && !entry.rejectionReason">-</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Submit Hours Modal -->
+  <div *ngIf="showSubmitModal && (!isAdmin || showSubmitModal)"
+    class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-4">
+          <h3 *ngIf="!path" class="text-lg heading font-semibold text-blue-900 text-gray-900">Submit Volunteer Hours</h3>
+          <h3 *ngIf="path" class="text-lg heading font-semibold text-blue-900 text-gray-900">Update Volunteer Hours</h3>
+          <button (click)="hideSubmitHoursModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+
+        <form (ngSubmit)="handleSubmitHours()" #submitForm="ngForm" enctype="multipart/form-data" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <!-- [disabled]="isAdmin ? true : false" -->
+              <label class="block text-sm font-medium text-gray-700">First Name *</label>
+              <input type="text" [(ngModel)]="hours.firstName" name="firstName" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Last Name *</label>
+              <input type="text" [(ngModel)]="hours.lastName" name="lastName" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Name of Activity *</label>
+            <input type="text" [(ngModel)]="hours.activityName" name="activityName" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Date of Service *</label>
+              <!-- <input type="date" [(ngModel)]="hours.serviceDate" name="serviceDate" [max]="today" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" /> -->
+              <mat-form-field appearance="outline" class="w-full mt-1 mat-input-match">
+                <input matInput [matDatepicker]="serviceDatePicker" [(ngModel)]="hours.serviceDate" name="serviceDate"
+                  placeholder="Select date" [max]="today" required />
+                <mat-datepicker-toggle matSuffix [for]="serviceDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #serviceDatePicker></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Number of Hours *</label>
+              <input type="number" [(ngModel)]="hours.hours" name="hours" step="0.1" min="0.1" required
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Type of Service *</label>
+            <select [(ngModel)]="hours.serviceType" name="serviceType" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Select service type</option>
+              <option *ngFor="let type of serviceTypes" [value]="type"> {{ type }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Activity Description *</label>
+            <textarea [(ngModel)]="hours.description" name="description" rows="3" required
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          </div>
+
+          <!-- <div *ngIf="hours.proofOfService">
+            <label class="block text-sm font-medium text-gray-700">Existing Proof Image</label>
+
+            <img [src]="'http://localhost:3000/uploads/proof/' + hours.proofOfService" alt="Proof"
+              class="w-40 h-40 object-cover border rounded-md mt-2" />
+          </div> -->
+
+          <div class="relative inline-block" *ngIf="hours.proofOfService">
+            <button type="button"
+              class="absolute top-2 left-2 bg-white bg-opacity-80 hover:bg-opacity-100 p-1 rounded-full shadow cursor-pointer"
+              (click)="openImageFullscreen(hours.proofOfService)">
+              <i class="fa-solid fa-expand"></i>
+            </button>
+
+            <!-- {{fileBaseUrl + '/uploads/proof/'+ hours.proofOfService}} -->
+            <img [src]="fileBaseUrl + '/uploads/proof/' + hours.proofOfService"
+              class="max-h-64 w-full object-contain border rounded-lg shadow" alt="Proof Image" />
+
+            <!-- Download Button (Top Right) -->
+            <a style="cursor: pointer;" *ngIf="isAdmin"
+              (click)="downloadProofOfImg(fileBaseUrl + '/uploads/proof/' + hours.proofOfService)"
+              class="absolute top-2 right-2 bg-white bg-opacity-80 hover:bg-opacity-100 p-1 rounded-full shadow cursor-pointer">
+              <i class="fa-solid fa-download"></i>
+            </a>
+          </div>
+
+          <div *ngIf="!isAdmin">
+            <label class="block text-sm font-medium text-gray-700">Picture Proof of Service *</label>
+            <input type="file" (change)="onFileSelected($event)"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+
+          <div *ngIf="!isAdmin">
+            <div class="flex justify-end space-x-3 pt-4">
+              <button type="button" (click)="hideSubmitHoursModal()"
+                class=" text-white submin-cancel-btn py-2 px-4 rounded-md transition duration-200">Cancel</button>
+              <button type="submit" *ngIf="!path"
+                class="text-white py-2 px-4 rounded-md transition duration-200 submin-hrs-btn">Submit</button>
+              <button type="button" *ngIf="path" (click)="updateHours()"
+                class="text-white py-2 px-4 rounded-md transition duration-200 submin-hrs-btn">Update</button>
+            </div>
+          </div>
+          <div *ngIf="isAdmin">
+            <div class="flex justify-end space-x-3 pt-4">
+              <button type="button" (click)="hideSubmitHoursModal()"
+                class=" text-white submin-cancel-btn py-2 px-4 rounded-md transition duration-200">Cancel</button>
+              <button type="button" (click)="adminUpdateHours(hours.id)"
+                class=" text-white submin-cancel-btn py-2 px-4 rounded-md transition duration-200">Update</button>
+              <button type="button" (click)="rejectHours(hours.id); hideSubmitHoursModal()"
+                class=" text-white submin-cancel-btn py-2 px-4 rounded-md transition duration-200">Reject</button>
+              <button type="submit" (click)="approveHours(hours.id); hideSubmitHoursModal()"
+                class="text-white py-2 px-4 rounded-md transition duration-200 submin-hrs-btn">Approve</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Admin Panel -->
+  <div *ngIf="isAdmin" id="adminPanel" class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <!-- <h2 class="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h2> -->
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6" *ngIf="!isAdmin">
+      <div class="bg-blue-50 rounded-lg p-4 cursor-pointer hover:bg-blue-100 transition" (click)="goToAllVolunteers()">
+        <h3 class="heading">Total Volunteers</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ adminStats.totalVolunteers }}</p>
+      </div>
+      <div class="bg-green-50 rounded-lg p-4">
+        <h3 class="heading">Total Hours</h3>
+        <p class="text-3xl font-bold text-green-600">{{ adminStats.totalHours }}</p>
+      </div>
+      <div class="bg-yellow-50 rounded-lg p-4">
+        <h3 class="heading">Pending Submissions</h3>
+        <p class="text-3xl font-bold text-yellow-600">{{ adminStats.pendingSubmissions }}</p>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex justify-between">
+
+        <h3 class="text-lg text-gray-900 heading font-bold">Volunteer Hours History</h3>
+
+        <div class="search-container">
+          <div class="search-box">
+
+            <!-- 🔍 TEXT SEARCH -->
+            <!-- <input *ngIf="selectedFilter !== 'date'" type="text" [(ngModel)]="searchText"
+              placeholder="What are you looking for?" class="search-input" /> -->
+
+            <input *ngIf="selectedFilter !== 'date'" type="text" [(ngModel)]="searchText" (input)="applyTextFilter()"
+              placeholder="What are you looking for?" class="search-input" />
+
+
+            <!-- 📅 DATE FILTER -->
+            <div *ngIf="selectedFilter === 'date'" class="date-filter">
+
+              <!-- <mat-form-field appearance="outline" class="date-field compact"> -->
+              <mat-form-field class="date-field compact">
+                <input matInput [matDatepicker]="fromPicker" placeholder="From Date" [(ngModel)]="searchFromDate" />
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+              </mat-form-field>
+
+              <mat-form-field class="date-field compact">
+                <input matInput [matDatepicker]="toPicker" placeholder="To Date" [(ngModel)]="searchToDate" />
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+              </mat-form-field>
+
+
+
+              <button mat-raised-button color="primary" class="btn btn-submit" (click)="applyDateFilter()">
+                Submit
+              </button>
+
+              <button mat-stroked-button color="warn" class="btn btn-cancel" (click)="cancelDateFilter()">
+                Cancel
+              </button>
+            </div>
+
+            <!-- ⬇️ FILTER DROPDOWN -->
+            <div class="dropdown">
+              <span class="dropdown-label" (click)="dropdownOpen = !dropdownOpen">
+                {{ displayLabel }}
+                <span class="arrow" [class.open]="dropdownOpen">▼</span>
+              </span>
+
+              <div class="dropdown-menu" *ngIf="dropdownOpen">
+                <div class="dropdown-item" (click)="selectFilter('', 'Select Filter')">Select Filter</div>
+                <div class="dropdown-item" (click)="selectFilter('fullName', 'Volunteer')">Volunteer</div>
+                <div class="dropdown-item" (click)="selectFilter('activityName', 'Activity')">Activity</div>
+                <div class="dropdown-item" (click)="selectFilter('date', 'Date')">Date</div>
+                <div class="dropdown-item" (click)="selectFilter('serviceType', 'Type')">Type</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+      <!-- <table class="min-w-full divide-y divide-gray-200"> -->
+      <table class="min-w-full divide-y divide-gray-200 admin-table">
+
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Volunteer</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Activity</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Date Of Service</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Hours</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Type</th>
+            <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- 🔥 No pending hours -->
+          <tr *ngIf="pendingHours.length === 0">
+            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+              No pending hours to review
+            </td>
+          </tr>
+          <!-- 🔥 Loop hours -->
+          <tr *ngFor="let entry of pendingHours | searchFilter: searchType : searchText">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate-cell" 
+              [title]="entry.firstName + ' ' + entry.lastName + ' (' + entry.volunteerId.email + ')'">
+              {{ entry.firstName }} {{entry.lastName}}
+              <br>
+              <span class="text-xs text-gray-500">{{ entry.volunteerId.email }}</span>
+            </td>
+            <!-- {{entry | json}} -->
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate-cell" [title]="entry.activityName">
+              {{ entry.activityName }}
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ entry.serviceDate | date: 'MM/dd/yyyy' }}
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ entry.hours }}
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate-cell" [title]="entry.serviceType">
+              {{ entry.serviceType }}
+            </td>
+
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <button (click)="approveHours(entry._id)"
+                class="bg-green-600 text-white px-3 py-1 rounded text-xs mr-1 hover:bg-green-700">
+                Approve
+              </button>
+
+              <button (click)="rejectHours(entry._id)"
+                class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                Reject
+              </button>
+
+              <button (click)="viewHourDetails(entry._id,entry.proofOfService)"
+                class="bg-blue-600 text-white px-3 py-1 rounded text-xs ml-1 hover:bg-blue-700">
+                View
+              </button>
+
+              <button (click)="editHoursAdmin(entry._id)"
+                class="bg-yellow-600 text-white px-3 py-1 rounded text-xs ml-1 hover:bg-yellow-700 admin-edit-btn">
+                Edit
+              </button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+  </div>
+
+  <!-- Message Container -->
+  <div id="messageContainer"></div>
+</div>

@@ -1,0 +1,86 @@
+<nav class="bg-white shadow-lg" id="navbar">
+<!-- <nav class="bg-white shadow-lg sticky top-0 z-50" id="navbar"> -->
+
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center py-2">
+
+            <!-- Logo -->
+            <div class="flex items-center">
+                <img src="assets/Image/logo.png" alt="logo" class="logo-img" (click)="routeDashboard()" />
+            </div>
+
+            <!-- Hamburger (Mobile Only) -->
+            <button class="flex hamburger md:hidden" *ngIf="isLoggedIn$ | async" (click)="mobileMenuOpen = !mobileMenuOpen">
+                <i class="fa-solid fa-bars  text-xl"></i>
+                <!-- <a href="https://nest4us.org/connect-with-us/" target="_blank" *ngIf="!isAdmin">
+                    <i class="fa-solid fa-question"></i>
+                </a> -->
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="items-center gap-4 hidden md:flex" *ngIf="isLoggedIn$ | async">
+
+                <button *ngIf="isAdmin" class="px-4 py-1 desktop-btn dashboard-btn text-white rounded-md" (click)="impactMetrics()">
+                    Impact Metrics
+                </button>
+
+                <button class="px-4 py-1 desktop-btn dashboard-btn text-white rounded-md" (click)="showDashboard()">
+                    Dashboard
+                </button>
+
+                <button *ngIf="isAdmin" class="px-4 py-1 desktop-btn tierbreakdown-btn text-white rounded-md"
+                    (click)="tierBreakdown()">
+                    Tier Breakdown
+                </button>
+
+                <!-- Profile Dropdown -->
+                <div class="custom-dropdown">
+                    <div class="flex items-center gap-1">
+                        <button (click)="toggleMenu()" class="profile-btn">
+
+                            <!-- SHOW IMAGE ONLY IF BOTH EXIST -->
+                            <img
+                            *ngIf="fileBaseUrl && previewUrl; else userIcon"
+                            [src]="fileBaseUrl + previewUrl"
+                            alt="Profile"
+                            class="profile-img"
+                            />
+
+                            <!-- FALLBACK ICON -->
+                            <ng-template #userIcon>
+                            <i class="fa-regular fa-user profile-icon"></i>
+                            </ng-template>
+
+                        </button>
+
+                        <button class="dropdown-btn" (click)="toggleMenu()">▼</button>
+                    </div>
+
+
+                    <div class="dropdown-menu" *ngIf="menuOpen">
+                        <div class="dropdown-item" (click)="openProfile()">My Profile</div>
+                        <div class="dropdown-item" (click)="changePassword()">Change Password</div>
+                        <div class="dropdown-item" (click)="faq()">FAQ's</div>
+                        <div class="dropdown-item" (click)="logout()">Logout</div>
+                    </div>
+                </div>
+
+                <a href="https://nest4us.org/connect-with-us/" target="_blank" *ngIf="!isAdmin">
+                    <i class="fa-solid fa-question"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu md:hidden" *ngIf="mobileMenuOpen && (isLoggedIn$ | async)">
+            <button *ngIf="isAdmin" (click)="impactMetrics()">Impact Metrics</button>
+            <button (click)="showDashboard()">Dashboard</button>
+            <button *ngIf="isAdmin" (click)="tierBreakdown()">Tier Breakdown</button>
+            <button (click)="openProfile()">My Profile</button>
+            <button (click)="changePassword()">Change Password</button>
+            <button (click)="faq()">FAQ's</button>
+            <button (click)="logout()">Logout</button>
+        </div>
+
+    </div>
+</nav>

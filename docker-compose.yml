@@ -1,0 +1,9 @@
+
+services:
+  vms-angular-app:
+    build: .
+    container_name: vms-angular-app
+    ports:
+      - "8040:80"
+    restart: always
+

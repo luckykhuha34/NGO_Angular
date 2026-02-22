@@ -1,0 +1,27 @@
+/* Main layout wrapper to manage header, content, footer */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Sticky Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000 !important;
+  background: #fff; /* required for sticky */
+}
+
+/* Content pushes footer down */
+.content {
+  flex: 1;
+  
+//   padding-bottom: 20px;
+}
+
+/* Footer sits at bottom when short, moves down when long */
+.footer {
+  margin-top: auto;
+  background: #fff;
+}

@@ -1,0 +1,184 @@
+<!-- Register Form  -->
+<!-- <div class="flex justify-center bg-gray-100" *ngIf="editProfile"> -->
+<div class="flex justify-center bg-gray-100" *ngIf="editProfile">
+  <div class="border border-gray-300 p-8 rounded-none w-full bg-white text-center">
+
+    <h2 class="text-2xl font-bold mb-6">Edit Profile</h2>
+
+    <!-- <form [formGroup]="signUpForm" class="grid md:grid-cols-3 gap-3 text-left"> -->
+    <form [formGroup]="updateProfile" class="grid md:grid-cols-3 gap-3 text-left">
+
+      <!-- Left Column -->
+      <div class="ml-5">
+
+        <!-- <div class="mb-4 flex"> -->
+        <div class="mb-4">
+          <!-- <p>First Name</p> -->
+          <label class="block text-sm font-semibold mb-1">First Name</label>
+          <input type="text" formControlName="firstName"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Last Name</label>
+          <input type="text" formControlName="lastName"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">School/Organization Affiliation</label>
+          <input type="text" formControlName="organization"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Date of Birth</label>
+          <input type="date" formControlName="dob"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="ml-5">
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Location (State/Region, Country)</label>
+          <input type="text" formControlName="country"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Phone Number</label>
+          <input type="text" formControlName="phoneNumber"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Email</label>
+          <input type="email" formControlName="email"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Causes/Areas of Interest</label>
+          <input type="text" formControlName="interests"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+      </div>
+
+      <!-- Profile Picture -->
+      <div class="justify-center items-center ml-10">
+        <label class="font-semibold mb-2">Profile Picture</label>
+        <div class="border border-gray-400 w-32 h-32 flex items-center justify-center mb-2">
+          <img *ngIf="previewUrl" [src]="previewUrl" alt="Profile Picture" class="w-full h-full object-cover" />
+          <div *ngIf="!previewUrl" class="text-gray-400">No Image</div>
+        </div>
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+      </div>
+
+      <div class="col-span-3 flex flex-col items-center mt-4">
+        <!-- <a href="#" class="hover:text-purple-800">Forgot Password</a>
+        <a href="#" class="hover:text-purple-800" (click)="loginPage = true; signUpPage = false;">Already have an
+          Account</a> -->
+        <br>
+        <button type="submit"
+          class="bg-purple-700 text-white px-8 py-2 font-bold hover:bg-purple-800 transition updatebtn">
+          Update
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+<div class="flex justify-center bg-gray-100" *ngIf="myProfile">
+  <div class="border border-gray-300 p-8 rounded-none w-full bg-white text-center">
+
+    <h2 class="text-2xl font-bold mb-6">Profile</h2>
+
+    <!-- <form [formGroup]="signUpForm" class="grid md:grid-cols-3 gap-3 text-left"> -->
+    <form [formGroup]="updateProfile" class="grid md:grid-cols-3 gap-3 text-left">
+
+      <!-- Left Column -->
+      <div class="ml-5">
+
+        <!-- <div class="mb-4 flex"> -->
+        <div class="mb-4">
+          <!-- <p>First Name</p> -->
+          <label class="block text-sm font-semibold mb-1">First Name</label>
+          <input type="text" [attr.disabled]="isDisabled ? '' : null" formControlName="firstName"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Last Name</label>
+          <input type="text" formControlName="lastName"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">School/Organization Affiliation</label>
+          <input type="text" formControlName="organization"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Date of Birth</label>
+          <input type="date" formControlName="dob"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="ml-5">
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Location (State/Region, Country)</label>
+          <input type="text" formControlName="location"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Phone Number</label>
+          <input type="text" formControlName="phone"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Email</label>
+          <input type="email" formControlName="email"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-semibold mb-1">Causes/Areas of Interest</label>
+          <input type="text" formControlName="interests"
+            class="w-full border border-gray-400 px-3 py-2 focus:ring-2 focus:ring-purple-500" />
+        </div>
+      </div>
+
+      <!-- Profile Picture -->
+      <div class="justify-center items-center ml-10">
+        <label class="font-semibold mb-2">Profile Picture</label>
+        <div class="border border-gray-400 w-32 h-32 flex items-center justify-center mb-2">
+          <!-- <img [src]="previewUrl" alt="Profile Picture" class="w-full h-full object-cover" /> -->
+          <div class="text-gray-400">No Image</div>
+        </div>
+        <!-- <input type="file" (change)="onFileSelected($event)" accept="image/*" /> -->
+      </div>
+
+      <div class="col-span-3 flex flex-col items-center mt-4">
+        <!-- <a href="#" class="hover:text-purple-800">Forgot Password</a>
+        <a href="#" class="hover:text-purple-800" (click)="loginPage = true; signUpPage = false;">Already have an
+          Account</a> -->
+        <br>
+        <button type="submit"
+          class="bg-purple-700 text-white px-8 py-2 font-bold hover:bg-purple-800 transition updatebtn">
+          Update
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+

@@ -1,0 +1,110 @@
+<app-loader *ngIf="loader"></app-loader>
+
+<!-- <div id="authContainer" class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6" *ngIf="authPage"> -->
+<div id="authContainer" class="mx-auto bg-white rounded-lg shadow-md p-6" *ngIf="authPage">
+    <div class="text-center mb-6">
+        <h2 id="authTitle" class="text-3xl font-bold text-gray-900">
+            LOG IN
+        </h2>
+        <!-- <p class="text-gray-600 mt-2">Volunteer Management System</p> -->
+    </div>
+    <!-- Login Form -->
+    <form id="loginForm" [formGroup]="loginForm" *ngIf="loginPage" class="space-y-4 max-w-md">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="loginEmail" formControlName="userName"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" id="loginPassword" formControlName="password"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <button type="submit" (click)="login()"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200">
+            Sign In
+        </button>
+        <div class="text-center">
+            <button type="button" (click)="loginPage = false; signUpPage = true" id="showRegisterBtn" class="text-blue-600 hover:text-blue-800">
+                Don't have an account? Register here
+            </button>
+        </div>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" [formGroup]="signUpForm" *ngIf="signUpPage" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">First Name *</label>
+                <input type="text" id="registerFirstName" formControlName="firstName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Last Name *</label>
+                <input type="text" id="registerLastName" formControlName="lastName"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required />
+            </div>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Email *</label>
+            <input type="email" id="registerEmail" formControlName="email"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Password *</label>
+            <input type="password" id="registerPassword" formControlName="password"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">School/Organization *</label>
+            <input type="text" id="registerSchool" formControlName="schoolOrOrganization"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Date of Birth *</label>
+            <input type="date" id="registerDOB" formControlName="dob"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Phone Number *</label>
+            <input type="tel" id="registerPhone" formControlName="phoneNumber"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">State/Region</label>
+                <input type="text" id="registerState" formControlName="state"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Country</label>
+                <input type="text" id="registerCountry" formControlName="country"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Referral Code (Optional)</label>
+            <input type="text" id="registerReferralCode" formControlName="refCode"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter referral code if you have one" />
+        </div>
+        <button type="submit" (click)="signUp()"
+            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200">
+            Create Account
+        </button>
+        <div class="text-center">
+            <button type="button" (click)="signUpPage = false; loginPage = true;" id="showLoginBtn" class="text-blue-600 hover:text-blue-800">
+                Already have an account? Sign in here
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,39 @@
+<app-loader *ngIf="loader"></app-loader>
+
+<div class="admin-wrapper">
+  <div class="admin-card">
+
+    <h2 class="admin-title">ADMIN LOGIN</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+      <div class="input-group">
+        <input type="email" placeholder="Admin Email" formControlName="userName" class="admin-input" required />
+      </div>
+
+      <!-- <div class="input-group">
+        <input type="password" placeholder="Password"
+               formControlName="password" class="admin-input" required />
+      </div> -->
+
+      <div class="input-group password-wrapper">
+        <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password"
+          class="admin-input" required />
+
+        <span class="toggle-eye" (click)="showPassword = !showPassword">
+          <i class="fa" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+        </span>
+      </div>
+
+      <button type="submit" class="admin-btn">
+        SIGN IN
+      </button>
+
+      <p class="forgot-text">
+        <a (click)="routeForgetPass()" style="cursor: pointer;">Forgot Password?</a>
+      </p>
+
+    </form>
+
+  </div>
+</div>
