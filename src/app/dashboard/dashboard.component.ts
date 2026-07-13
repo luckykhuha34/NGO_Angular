@@ -558,8 +558,30 @@ export class DashboardComponent {
   // Modal Functions
   hideSubmitHoursModal() { this.showSubmitModal = false; this.hours = {}; this.proofFile = null; }
 
-  onFileSelected(event: any) { this.proofFile = event.target.files[0]; console.log(this.proofFile) }
+  onFileSelected(event: any) { 
+    const file = event.target.files[0];
+    if (file) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      const maxSize = 3 * 1024 * 1024; // 3MB
 
+      if (!allowedTypes.includes(file.type)) {
+        this.toster.show('error', 'Only JPG, JPEG, and PNG files are allowed.');
+        event.target.value = '';
+        this.proofFile = null;
+        return;
+      }
+
+      if (file.size > maxSize) {
+        this.toster.show('error', 'File size must be less than 3MB.');
+        event.target.value = '';
+        this.proofFile = null;
+        return;
+      }
+
+      this.proofFile = file; 
+      console.log(this.proofFile);
+    }
+  }
   formatDateToYYYYMMDD(date: Date | string): string {
     const d = new Date(date);
     const year = d.getFullYear();
