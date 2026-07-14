@@ -345,8 +345,9 @@
 
           <div *ngIf="!isAdmin">
             <label class="block text-sm font-medium text-gray-700">Picture Proof of Service *</label>
-            <input type="file" (change)="onFileSelected($event)"
+            <input type="file" (change)="onFileSelected($event)" accept="image/jpeg, image/png, image/jpg"
               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <p class="text-xs text-gray-500 mt-1">Accepted formats: JPG, JPEG, PNG. Max size: 3MB.</p>
           </div>
 
           <div *ngIf="!isAdmin">
