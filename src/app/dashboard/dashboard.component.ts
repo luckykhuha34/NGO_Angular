@@ -658,11 +658,11 @@ export class DashboardComponent {
           this.loadAdminPanel();
           this.loadDashboardData();
           this.toster.show('success', 'Hours submitted');
+          this.loaderVisible = false;
+          this.cdr.markForCheck();
         },
         error: (err) => {
           this.toster.show('error', err.error?.message || 'Failed to submit hours');
-        },
-        complete: () => {
           this.loaderVisible = false;
           this.cdr.markForCheck();
         }
